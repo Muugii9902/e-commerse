@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/footer/footer";
 import { Header } from "@/components/header/header";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -13,8 +14,9 @@ export default function Home() {
     setCount(count + 1);
   };
   return (
-    <div>
+    <div className="gap 10">
       <Header />
+      <Footer />
     </div>
   );
 }
