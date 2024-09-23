@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -10,15 +11,25 @@ export const login = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Нэр эсвэл нууц үг хоосон байж болохгүй." });
     }
-    const user = await User.findOne({ email });
 
-    const isCheck = user && bcrypt.compareSync(password, user.password);
-    if (!isCheck) {
-      return res
-        .status(401)
-        .json({ message: "Нэр эсвэл нууц үг буруу байна." });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "burtgel uusgegui bnaa" });
+    } else {
+      const isCheck =
+        user && bcrypt.compareSync(password, user.password.toString());
+
+      if (!isCheck) {
+        return res.status(400).json({
+          message: "Хэрэглэгчийн имэйл эсвэл нууц үг тохирохгүй байна.",
+        });
+      } else {
+        const token = jwt.sign({ id: user._id }, "JWT_TOKEN_PASS@123", {
+          expiresIn: "1h",
+        });
+        res.status(200).json({ message: "success", token });
+      }
     }
-    res.status(200).json({ message: "Амжилттай нэвтэрлээ", user });
   } catch (error) {
     res.status(500).json({ message: "Серверийн алдаа", error });
   }
@@ -26,25 +37,25 @@ export const login = async (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { fristname, lastname, email, password, role, profile_img, address } =
+    const { firstname, lastname, email, password, role, profile_img, address } =
       req.body;
 
-    if (!fristname || !email || !password) {
-      res.status(400).json({ message: "Хоосон утга байж болохгүй." });
+    if (!firstname || !email || !password) {
+      return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
     }
-    const hashedPassword = bcrypt.hashSync(password, 10);
     const createdUser = await User.create({
-      fristname,
+      firstname,
       lastname,
       email,
-      password: hashedPassword,
+      password,
       role,
-      phoneNumber: " ",
+      phoneNumber: "9922",
       profile_img,
       address,
     });
     res.status(201).json({ message: "sucsess", user: createdUser });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server Error", error: error });
   }
 };
