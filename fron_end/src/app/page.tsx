@@ -1,9 +1,6 @@
 "use client";
-import Footer from "@/components/footer/footer";
-import { Header } from "@/components/header/header";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
+
+import { Slider } from "@/components/ui/slider";
 
 export default function Home() {
   // const [count, setCount] = useState<number>(5);
@@ -16,6 +13,7 @@ export default function Home() {
   return (
     <div className="w-full h-screen">
       <h1>Welcome</h1>
+      <Slider />
     </div>
   );
 }

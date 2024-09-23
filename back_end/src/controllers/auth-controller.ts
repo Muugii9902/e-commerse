@@ -37,8 +37,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { firstname, lastname, email, password, role, profile_img, address } =
-      req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     if (!firstname || !email || !password) {
       return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
@@ -48,10 +47,7 @@ export const signup = async (req: Request, res: Response) => {
       lastname,
       email,
       password,
-      role,
       phoneNumber: "9922",
-      profile_img,
-      address,
     });
     res.status(201).json({ message: "sucsess", user: createdUser });
   } catch (error) {
