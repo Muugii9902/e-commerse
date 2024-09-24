@@ -1,9 +1,30 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Signup = () => {
+  const router = useRouter();
+  const [userData, setUserDate] = useState({
+    firstname: "",
+    email: "",
+    password: "",
+    repassword: "",
+  });
+  const [image, setImage] = useState(null);
+
+  const signUp = async () => {
+    const { firstname, email, password, repassword } = userData;
+    if (password !== repassword) {
+      toast.error("Нууц үг хоорондоо тохирохгүй байна.");
+      return;
+    }
+    try {
+    } catch (error) {}
+  };
+
   return (
     <div className="bg-gray-100 max-w-full">
       <div className="w-full h-screen p-32 m-auto">
