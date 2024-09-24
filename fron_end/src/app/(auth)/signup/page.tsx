@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { apiUrl } from "@/utils/utils";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -9,6 +11,7 @@ const Signup = () => {
   const router = useRouter();
   const [userData, setUserDate] = useState({
     firstname: "",
+    lastname: "",
     email: "",
     password: "",
     repassword: "",
@@ -16,13 +19,33 @@ const Signup = () => {
   const [image, setImage] = useState(null);
 
   const signUp = async () => {
-    const { firstname, email, password, repassword } = userData;
+    const { firstname, lastname, email, password, repassword } = userData;
     if (password !== repassword) {
       toast.error("Нууц үг хоорондоо тохирохгүй байна.");
       return;
     }
     try {
-    } catch (error) {}
+      const res = await axios.post(`${apiUrl}`, {
+        firstname,
+        lastname,
+        email,
+        password,
+      });
+      if (res.status === 201) {
+        toast.success("User successfully signed up", {
+          autoClose: 1000,
+        });
+        router.push("/login");
+        console.log("response");
+      }
+    } catch (error) {
+      console.error("There was an error signing up:", error);
+      toast.error("Failed to sign up. Please try again.");
+    }
+  };
+  const handlechange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserDate((pre) => ({ ...pre, [name]: value }));
   };
 
   return (
@@ -32,10 +55,36 @@ const Signup = () => {
           <h1>Бүртгүүлэх</h1>
           <div>
             <div className="flex flex-col gap-4 rounded-2xl mt-6">
-              <Input placeholder="Нэр" />
-              <Input placeholder="Имэйл хаяг" />
-              <Input placeholder="Нууц үг" />
-              <Input placeholder="Нууц үг давтах " />
+              <Input
+                type="text"
+                placeholder="Нэр"
+                name="firstname"
+                onChange={handlechange}
+              />
+              <Input
+                type="text"
+                placeholder="Овог"
+                name="lastname"
+                onChange={handlechange}
+              />
+              <Input
+                type="email"
+                placeholder="Имэйл хаяг"
+                name="email"
+                onChange={handlechange}
+              />
+              <Input
+                type="password"
+                placeholder="Нууц үг"
+                name="password"
+                onChange={handlechange}
+              />
+              <Input
+                type="password"
+                placeholder="Нууц үг давтах "
+                name="repassword"
+                onChange={handlechange}
+              />
             </div>
 
             <div>
@@ -49,7 +98,10 @@ const Signup = () => {
               </div>
             </div>
             <div className="flex flex-col gap-12 mt-4">
-              <Button className="w-[334px] h-[36px] bg-blue-600 rounded-2xl py-[8px] px-[16px] text-white">
+              <Button
+                className="w-[334px] h-[36px] bg-blue-600 rounded-2xl py-[8px] px-[16px] text-white"
+                onClick={signUp}
+              >
                 Үүсгэх
               </Button>
               <Button className="bg-white text-blue-500 rounded-2xl">
