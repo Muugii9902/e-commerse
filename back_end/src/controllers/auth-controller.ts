@@ -55,3 +55,30 @@ export const signup = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server Error", error: error });
   }
 };
+export const forgetPass = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    console.log("first", email);
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(404).json({ message: "hereglegch oldsongv" });
+    } else {
+      const ischeck = bcrypt.compareSync(password, user.password.toString());
+      if (!ischeck) {
+        res.status(400).json({ message: "email or password buruu baina" });
+      } else {
+        const token = jwt.sign({ id: user.id }, "JWT_TOKEN_PASS@123", {
+          expiresIn: "10h",
+        });
+        res.status(201).json({
+          message: "success",
+          token,
+          user,
+          // optmail(email)
+        });
+      }
+    }
+  } catch (error) {
+    res.status(401).json({ message: error });
+  }
+};
