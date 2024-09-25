@@ -16,7 +16,7 @@ const Signup = () => {
     password: "",
     repassword: "",
   });
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
 
   const signUp = async () => {
     const { firstname, lastname, email, password, repassword } = userData;
@@ -25,7 +25,7 @@ const Signup = () => {
       return;
     }
     try {
-      const res = await axios.post(`${apiUrl}`, {
+      const res = await axios.post(`${apiUrl}/signup`, {
         firstname,
         lastname,
         email,
