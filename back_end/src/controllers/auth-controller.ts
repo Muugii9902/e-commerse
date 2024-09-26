@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { generateToken } from "../utils/jwt";
 import { sendEmail } from "../utils/send-email";
 import crypto from "crypto";
+import { generateOtp } from "../utils/generateotp";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -74,9 +75,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
     }
-    const otp = Math.floor(Math.random() * 10_000)
-      .toString()
-      .padStart(4, "0");
+    const otp = generateOtp();
     findUser.otp = otp;
     await findUser.save();
     await sendEmail(email, otp);
