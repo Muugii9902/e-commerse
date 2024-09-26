@@ -18,17 +18,7 @@ export const createProduct = async (req: Request, res: Response) => {
     if (!name || !description || !price || !quantity || !category) {
       return res.status(400).json({ message: " Хоосон утга байж болохгүй" });
     }
-    const product = await Product.create({
-      name,
-      description,
-      price,
-      size,
-      images,
-      isNew,
-      quantity,
-      discount,
-      category,
-    });
+    const product = await Product.create(req.body);
 
     res
       .status(201)
