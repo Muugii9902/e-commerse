@@ -11,6 +11,9 @@ interface IUser {
   role: String;
   profile_img: String;
   address: String;
+  otp: String;
+  passwordResetToken: String;
+  passwordResetTokenExpire: Date;
   updated_at: Date;
   created_at: Date;
 }
