@@ -62,7 +62,16 @@ const Login = () => {
             >
               Нэвтрэх
             </Button>
-            <p className="underline m-auto mt-4">Нууц үг мартсан</p>
+            <Button
+              className="underline m-auto mt-4"
+              variant="link"
+              onClick={() =>
+                router.push("http://localhost:3000/forgetpass/email")
+              }
+            >
+              Нууц үг мартсан
+            </Button>
+
             <Button
               className="bg-white w-[334px] h-[36px] rounded-2xl text-blue-500 mt-12"
               onClick={() => {
