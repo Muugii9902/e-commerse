@@ -107,20 +107,21 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
   await sendEmail(
     email,
-    `<a href="http://localhost:3000/forgetpass/newpass?resettoken="${resetToken}"">Нууц үг сэргээх холбоос</a>`
+    `<a href="http://localhost:3000/forgetpass/newpass?resettoken="${resetToken}"&email=${email}">Нууц үг сэргээх холбоос</a>`
   );
   res.status(200).json({ message: "Нууц үг сэргээх имэйл илгээлээ" });
 };
 
 export const verifyPassword = async (req: Request, res: Response) => {
   const { password, resetToken } = req.body;
+  console.log("==>", password, resetToken);
   const hashedResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
   const findUser = await User.findOne({
     passwordResetToken: hashedResetToken,
-    passwordResetTokenExpire: { $gt: Date.now },
+    passwordResetTokenExpire: { $gt: Date.now() },
   });
   if (!findUser) {
     return res
