@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 
 const Otp = () => {
   const router = useRouter();
-  const [countDown, setCountDown] = useState(30);
+  const [countDown, setCountDown] = useState(60);
   const [otpValue, setOtpValue] = useState("12");
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Otp = () => {
   }, [countDown]);
 
   const handleResendOtp = () => {
-    setCountDown(30);
+    setCountDown(60);
   };
 
   const handleConfirmOtp = (value: string) => {

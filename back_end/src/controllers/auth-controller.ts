@@ -70,19 +70,21 @@ export const forgetPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
     const findUser = await User.findOne({ email: email });
+    console.log(findUser);
     if (!findUser) {
       return res
         .status(400)
         .json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
     }
     const otp = generateOtp();
+    console.log("otp", otp);
     findUser.otp = otp;
     await findUser.save();
     await sendEmail(email, otp);
     res.status(200).json({ message: "OTP code is sent email successfully" });
   } catch (error) {
     console.error("Алдаа гарлаа: ", error);
-    res.status(500).json({ message: "Серверийн алдаа гарлаа" });
+    res.status(500).json({ message: "Серверийн алдаа гарлааaa" });
   }
 };
 //

@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import { genarateHtmlTemplate } from "./generate";
+import dotenv from "dotenv";
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -14,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendEmail = async (email: string, otp: string) => {
   await transporter.sendMail({
-    from: "ugtakhbayar0217@gmail.com",
+    from: "muugii9902@gmail.com",
     to: email,
     subject: "Hello World",
     html: genarateHtmlTemplate(otp),

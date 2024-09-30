@@ -13,7 +13,7 @@ const Email = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otpValue, setOtpValue] = useState("");
-  const [countDown, setCountDown] = useState(30);
+  const [countDown, setCountDown] = useState(60);
 
   const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -29,6 +29,7 @@ const Email = () => {
         setStep(step + 1);
       }
     } catch (error) {
+      console.log("aldaa end bna", error);
       toast.error("Имэйл илгээхэд алдаа гарлаа");
     }
   };
@@ -54,7 +55,7 @@ const Email = () => {
   };
 
   const handleResendOtp = () => {
-    setCountDown(30);
+    setCountDown(60);
   };
 
   useEffect(() => {
