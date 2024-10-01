@@ -66,7 +66,7 @@ const Email = () => {
     }
   }, [countdown]);
   return (
-    <div>
+    <div className="w-[full] h-screen flex justify-center">
       {step === 1 && (
         <div className="flex flex-col w-[334px] justify-center m-auto gap-4 py-4 my-24">
           <p className="text-center text-2xl font-bold">Нууц үг сэргээх</p>
