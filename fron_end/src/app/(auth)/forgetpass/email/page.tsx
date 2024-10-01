@@ -29,11 +29,11 @@ const Email = () => {
       );
       if (res.status === 200) {
         setStep(step + 1);
-        toast.success("tanii emailruu 4 orontoi code ilgeelee");
+        toast.success("Таны Имэйлрүү 4 оронтой кодь явууллаа");
       }
     } catch (error) {
-      console.log("email ilgeehed aldaa garlaa", error);
-      toast.error("email ilgeehed aldaa garlaa");
+      console.log("Имэйл илгээхэд алдаа гарлаа", error);
+      toast.error("Имэйл илгээхэд алдаа гарлаа");
     }
   };
 
@@ -49,11 +49,13 @@ const Email = () => {
           { email, otpValue: value }
         );
         if (res.status === 200) {
-          toast.success("nuuts ug sergeeh holboosiig emailruu ilgeelee");
-          router.push("/signin");
+          toast.success(
+            "Таны имэйл хаяг руу нууц үг сэргээх холбоосыг илгээлээ"
+          );
+          router.push("/login");
         }
       } catch (error) {
-        toast.error("OTP tohirohgui baina");
+        toast.error("OTP тохирохгүй байна");
       }
     }
   };
