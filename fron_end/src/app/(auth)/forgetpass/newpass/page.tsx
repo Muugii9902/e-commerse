@@ -17,7 +17,7 @@ const NewPass = () => {
     hasUpperCase: false,
     hasLowerCase: false,
     hasNumber: false,
-    // hasSpecialChar: false,
+    hasSpecialChar: false,
   });
   const params = useSearchParams();
 
@@ -26,7 +26,7 @@ const NewPass = () => {
       hasUpperCase: /[A-Z]/.test(password),
       hasLowerCase: /[a-z]/.test(password),
       hasNumber: /\d/.test(password),
-      // hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]]/.test(password),
+      hasSpecialChar: /[!@#$%^&*()\-+={}[\]:;"'<>,.?\/|\\]/.test(password),
     };
     setPasswordValidations(validations);
   }, [password]);
@@ -40,7 +40,8 @@ const NewPass = () => {
       !(
         passwordValidations.hasUpperCase &&
         passwordValidations.hasLowerCase &&
-        passwordValidations.hasNumber
+        passwordValidations.hasNumber &&
+        passwordValidations.hasSpecialChar
       )
     ) {
       toast.error("Алдаа: Нууц үг шаардлагыг хангахгүй байна");
@@ -127,13 +128,13 @@ const NewPass = () => {
               >
                 Тоо орсон байх
               </li>
-              {/* <li
-              style={{
-                color: passwordValidations.hasSpecialChar ? "green" : "red",
-              }}
-            >
-              Тэмдэгт орсон байх
-            </li> */}
+              <li
+                style={{
+                  color: passwordValidations.hasSpecialChar ? "green" : "red",
+                }}
+              >
+                Тэмдэгт орсон байх
+              </li>
             </ul>
             <Button className="button-primary" onClick={handleNewPassword}>
               Үүсгэх
