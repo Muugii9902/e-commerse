@@ -34,7 +34,7 @@ export function DropdownMenuDemo() {
         <DropdownMenuItem
           onClick={() => {
             localStorage.removeItem("token");
-            router.push("/signin");
+            router.push("/login");
           }}
         >
           Log out

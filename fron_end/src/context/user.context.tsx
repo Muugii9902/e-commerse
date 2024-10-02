@@ -1,6 +1,12 @@
 "use client";
 import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 interface IUserCOntext {
   user: {
@@ -13,6 +19,8 @@ interface IUserCOntext {
     profile_img: string;
   } | null;
   fetchUserData: () => void;
+  setToken: Dispatch<SetStateAction<string | null>>;
+  setUser: Dispatch<SetStateAction<null>>;
 }
 export const UserContext = createContext<IUserCOntext>({
   user: {
@@ -25,17 +33,13 @@ export const UserContext = createContext<IUserCOntext>({
     profile_img: "",
   },
   fetchUserData: () => {},
+  setToken: () => {},
+  setUser: () => {},
 });
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState({
-    _id: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    phonenumber: "",
-    role: "",
-    profile_img: "",
-  });
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState(null);
+
   const fetchUserData = async () => {
     try {
       console.log("user user");
@@ -59,13 +63,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
   useEffect(() => {
-    if (!user) {
+    if (token) {
       fetchUserData();
     }
-  }, [user?._id]);
+  }, [token]);
 
   return (
-    <UserContext.Provider value={{ user, fetchUserData }}>
+    <UserContext.Provider value={{ user, fetchUserData, setToken, setUser }}>
       {children}
     </UserContext.Provider>
   );

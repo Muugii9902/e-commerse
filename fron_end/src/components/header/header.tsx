@@ -6,11 +6,13 @@ import { Heart } from "lucide-react";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { DropdownMenu } from "../ui/dropdown-menu";
+
 import { UserContext } from "@/context/user.context";
+import { DropdownMenuDemo } from "../dropdownpage";
 
 export const Header = () => {
   const { user, fetchUserData } = useContext(UserContext);
+  console.log("hahahahahaha", user);
 
   return (
     <div className="w-full h-[68px] grid-cols-3 bg-black text-white flex justify-between px-8 py-4">
@@ -40,7 +42,7 @@ export const Header = () => {
             </Button>
           </>
         ) : (
-          <p>hhhhhhhhh</p>
+          <DropdownMenuDemo />
         )}
       </div>
     </div>
