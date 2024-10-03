@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { UserContext } from "@/context/user.context";
+import { UserContext } from "@/app/context/user.context";
 
 export function DropdownMenuDemo() {
   const { setToken, setUser } = useContext(UserContext);

@@ -1,14 +1,25 @@
 import { Request, Response } from "express";
 import Product from "../models/product.model";
 
-export const getAllproducts = async (req: Request, res: Response) => {
+export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const allProducts = await Product.find({});
-    console.log("products", allProducts);
-    res.status(200).json({ message: "success", user: allProducts });
-  } catch (error: any) {
-    console.log(error.message);
-    res.status(404).json({ message: "aldaa garlaa", error: error.message });
+    const products = await Product.find({}).populate("category");
+    console.log("baraaa", products);
+    res.status(200).json({ message: "success to get all product", products });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "failed to get all product" });
+  }
+};
+
+export const getProduct = async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  try {
+    const product = await Product.findById(productId).populate("category");
+    res.status(200).json({ message: "success to get one product", product });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "failed to get one product" });
   }
 };
 

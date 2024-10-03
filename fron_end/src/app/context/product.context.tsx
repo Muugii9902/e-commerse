@@ -36,6 +36,7 @@ export const ProductProvider = ({
     try {
       const res = await axios.get(`http://localhost:8000/api/v1/product`);
       setProducts(res.data.user);
+      console.log("bar", res.data.user);
     } catch (error) {
       console.error("Error fetching product data:", error);
     }

@@ -6,7 +6,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrl } from "@/utils/utils";
-import { UserContext } from "@/context/user.context";
+import { UserContext } from "@/app/context/user.context";
 
 const Login = () => {
   const { setToken } = useContext(UserContext);

@@ -7,7 +7,7 @@ import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-import { UserContext } from "@/context/user.context";
+import { UserContext } from "@/app/context/user.context";
 import { DropdownMenuDemo } from "../dropdownpage";
 
 export const Header = () => {

@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { Model } from "mongoose";
 
 interface IProduct {
   name: string;
