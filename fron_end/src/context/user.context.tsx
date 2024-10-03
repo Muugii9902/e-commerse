@@ -56,6 +56,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (res.status === 200) {
         setUser(res.data.user);
+        console.log("res,data", res.data.user);
         console.log("USER", user);
       }
     } catch (error) {
@@ -65,6 +66,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (token) {
       fetchUserData();
+    } else {
+      setToken(localStorage.getItem("token"));
     }
   }, [token]);
 

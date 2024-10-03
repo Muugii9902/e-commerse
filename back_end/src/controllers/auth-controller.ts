@@ -10,31 +10,30 @@ import { generateOtp } from "../utils/generateotp";
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res
-        .status(400)
+        .status(402)
         .json({ message: "Нэр эсвэл нууц үг хоосон байж болохгүй." });
     }
 
     const user = await User.findOne({ email });
-    if (!user) {
-      console.log("==>", user);
-      return res.status(400).json({ message: "burtgel uusgegui bnaa" });
-    } else {
-      const isCheck =
-        user && bcrypt.compareSync(password, user.password.toString());
 
-      if (!isCheck) {
-        return res.status(400).json({
-          message: "Хэрэглэгчийн имэйл эсвэл нууц үг тохирохгүй байна.",
-        });
-      } else {
-        const token = jwt.sign({ id: user._id }, "JWT_TOKEN_PASS@123", {
-          expiresIn: "1h",
-        });
-        res.status(200).json({ message: "success", token });
-      }
+    if (!user) {
+      return res.status(401).json({ message: "burtgel uusgegui bnaa" });
     }
+
+    const isCheck = bcrypt.compareSync(password, user.password);
+    console.log("first", isCheck);
+    if (!isCheck) {
+      return res.status(403).json({
+        message: "Хэрэглэгчийн имэйл эсвэл нууц үг тохирохгүй байна.",
+      });
+    }
+
+    const token = generateToken({ id: user._id });
+
+    res.status(200).json({ message: "success", token });
   } catch (error) {
     res.status(500).json({ message: "Серверийн алдаа", error });
   }

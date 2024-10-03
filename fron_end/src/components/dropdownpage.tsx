@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CiUser } from "react-icons/ci";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { UserContext } from "@/context/user.context";
 
 export function DropdownMenuDemo() {
+  const { setToken, setUser } = useContext(UserContext);
   const router = useRouter();
   return (
     <DropdownMenu>
@@ -34,6 +38,8 @@ export function DropdownMenuDemo() {
         <DropdownMenuItem
           onClick={() => {
             localStorage.removeItem("token");
+            setToken(null);
+            setUser(null);
             router.push("/login");
           }}
         >

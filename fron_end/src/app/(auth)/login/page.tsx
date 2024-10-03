@@ -31,7 +31,7 @@ const Login = () => {
         router.push("/");
       }
     } catch (error) {
-      console.log("There was an error signing in:", error);
+      console.log("There was an error  in:", error);
       toast.error("Нэвтрэхэд алдаа гарлаа");
     }
   };
@@ -53,7 +53,7 @@ const Login = () => {
             <Input
               placeholder="Нууц үг"
               className="rounded-2xl"
-              type="password"
+              type="text"
               value={userData.password}
               onChange={(e) =>
                 setUserData({ ...userData, password: e.target.value })
