@@ -18,3 +18,13 @@ export const createCategory = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Алдаа гарлаа", error });
   }
 };
+
+export const getCategories = async (req: Request, res: Response) => {
+  try {
+    const allCategories = await Category.find({});
+    res.status(201).json({ message: "Success", categories: allCategories });
+  } catch (error: any) {
+    console.log("error", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

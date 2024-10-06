@@ -5,7 +5,9 @@ export const getAllProduct = async (req: Request, res: Response) => {
   try {
     const products = await Product.find({}).populate("category");
     console.log("baraaa", products);
-    res.status(200).json({ message: "success to get all product", products });
+    res
+      .status(200)
+      .json({ message: "success to get all product", user: products });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "failed to get all product" });

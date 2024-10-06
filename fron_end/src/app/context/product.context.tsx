@@ -10,6 +10,7 @@ interface IProduct {
   size: string;
   images: string;
   isNew: boolean;
+  _id: string;
   quantity: number;
   discount: number;
   category: string;
