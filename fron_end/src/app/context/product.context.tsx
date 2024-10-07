@@ -18,12 +18,21 @@ interface IProduct {
 
 interface IproductContext {
   products: IProduct[];
+  selectedProduct: IProduct | null;
+  selectedProductId: string | null;
   fetchProductData: () => void;
+  selectProduct: (id: string) => void;
+
+  setSelectedProductId: (id: string) => void;
 }
 
 export const ProductContext = createContext<IproductContext>({
   products: [],
+  selectedProduct: null,
+  selectedProductId: null,
   fetchProductData: () => {},
+  selectProduct: () => {},
+  setSelectedProductId: () => {},
 });
 
 export const ProductProvider = ({
@@ -32,14 +41,29 @@ export const ProductProvider = ({
   children: React.ReactNode;
 }) => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null
+  );
 
   const fetchProductData = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/v1/product`);
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/products/product`
+      );
       setProducts(res.data.user);
       console.log("bar", res.data.user);
     } catch (error) {
-      console.error("Error fetching product data:", error);
+      console.error("Барааг авахад алдаа гарлаа:", error);
+    }
+  };
+  const selectProduct = async (id: string) => {
+    try {
+      const res = await axios.get(`http://localhost:8000/api/v1/product/${id}`);
+      setSelectedProduct(res.data.product); // Сонгосон барааны мэдээлэл
+      console.log("Сонгосон барааны мэдээлэл:", res.data.product);
+    } catch (error) {
+      console.error("Сонгосон барааг авахад алдаа гарлаа:", error);
     }
   };
 
@@ -48,7 +72,16 @@ export const ProductProvider = ({
   }, []);
 
   return (
-    <ProductContext.Provider value={{ products, fetchProductData }}>
+    <ProductContext.Provider
+      value={{
+        products,
+        selectedProduct,
+        selectedProductId,
+        fetchProductData,
+        selectProduct,
+        setSelectedProductId,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );
