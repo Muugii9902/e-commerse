@@ -6,9 +6,12 @@ import { useParams } from "next/navigation";
 import { CiHeart } from "react-icons/ci";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
+import Rating from "@/components/rating";
 
 const ProductDetail = () => {
   const [isTrue, setIstrue] = useState(true);
+  const [count, setCount] = useState(0);
   const { id } = useParams();
   const [product, setProduct] = useState({
     name: "",
@@ -16,9 +19,9 @@ const ProductDetail = () => {
     price: "",
     size: "",
     images: "",
-    isNew: "",
-    quantity: "",
-    discount: "",
+    isNew: true,
+    quantity: 0,
+    discount: 0,
     category: "",
   });
   const getProduct = async (id: string | string[]) => {
@@ -33,10 +36,13 @@ const ProductDetail = () => {
       toast.error("aldaa garlaa product detail error");
     }
   };
-  console.log("++++++", product);
+
   useEffect(() => {
     getProduct(id);
   }, []);
+  const handleRatingSelect = (rating: number) => {
+    console.log("Сонгосон үнэлгээ: ", rating);
+  };
   return (
     <div className="w-full h-screen ">
       <div className="flex  container  m-auto  p-12 gap-5">
@@ -89,7 +95,7 @@ const ProductDetail = () => {
               />
             )}
           </div>
-          <p>Зэрлэг цэцгийн зурагтай даавуун материалтай цамц</p>
+          <p>{product.description}</p>
           <div>
             <p>Хэмжээний заавар</p>
             <div className="flex gap-2 text-xs">
@@ -110,18 +116,40 @@ const ProductDetail = () => {
               </p>
             </div>
           </div>
-          <div className="">
-            <button>-</button>
-            <p>1</p>
-            <button>+</button>
+          <div className="flex items-center gap-3">
+            <button
+              className="border border-black rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-400"
+              onClick={() => {
+                setCount(count - 1);
+              }}
+            >
+              -
+            </button>
+            <p>{count}</p>
+            <button
+              className="border border-black rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-400"
+              onClick={() => {
+                setCount(count + 1);
+              }}
+            >
+              +
+            </button>
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-xl font-bold">{product.price}</p>
+            <div>
+              <Button className="bg-[#2563EB] rounded-2xl">
+                Сагсанд нэмэх
+              </Button>
+            </div>
           </div>
           <div>
             <div>
               <p>Үнэлгээ</p>
               <button>бүгдийг харах</button>
             </div>
-            <div>
-              <p>stars</p>
+            <div className="flex items-center gap-2">
+              <Rating onRatingSelect={handleRatingSelect} />
             </div>
           </div>
         </div>
