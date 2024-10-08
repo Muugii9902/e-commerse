@@ -13,6 +13,7 @@ const ProductDetail = () => {
   const [isTrue, setIstrue] = useState(true);
   const [count, setCount] = useState(0);
   const { id } = useParams();
+
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -43,6 +44,7 @@ const ProductDetail = () => {
   const handleRatingSelect = (rating: number) => {
     console.log("Сонгосон үнэлгээ: ", rating);
   };
+
   return (
     <div className="w-full h-screen ">
       <div className="flex  container  m-auto  p-12 gap-5">
@@ -116,7 +118,7 @@ const ProductDetail = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 py-4">
             <button
               className="border border-black rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-400"
               onClick={() => {
@@ -135,21 +137,21 @@ const ProductDetail = () => {
               +
             </button>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 py-4">
             <p className="text-xl font-bold">{product.price}</p>
-            <div>
+            <div className="py-4">
               <Button className="bg-[#2563EB] rounded-2xl">
                 Сагсанд нэмэх
               </Button>
             </div>
           </div>
           <div>
-            <div>
-              <p>Үнэлгээ</p>
-              <button>бүгдийг харах</button>
-            </div>
             <div className="flex items-center gap-2">
+              <p>Үнэлгээ</p>
               <Rating onRatingSelect={handleRatingSelect} />
+            </div>
+            <div className="py-4">
+              <button>бүгдийг харах</button>
             </div>
           </div>
         </div>
