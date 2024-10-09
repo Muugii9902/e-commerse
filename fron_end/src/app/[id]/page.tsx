@@ -14,7 +14,7 @@ const ProductDetail = () => {
   const { addCartProduct, setCartProduct, cartProduct } =
     useContext(CartContext);
   const [isTrue, setIstrue] = useState(true);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const { id } = useParams();
   const [totalAmount, setTotalAmount] = useState(0);
   const [product, setProduct] = useState({
