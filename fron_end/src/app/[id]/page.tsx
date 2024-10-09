@@ -2,25 +2,29 @@
 
 import axios from "axios";
 import { FaHeart } from "react-icons/fa";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { CiHeart } from "react-icons/ci";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import Rating from "@/components/rating";
+import { CartContext } from "../context/cart.context";
 
 const ProductDetail = () => {
+  const { addCartProduct, setCartProduct, cartProduct } =
+    useContext(CartContext);
   const [isTrue, setIstrue] = useState(true);
   const [count, setCount] = useState(0);
   const { id } = useParams();
-
+  const [totalAmount, setTotalAmount] = useState(0);
   const [product, setProduct] = useState({
     name: "",
     description: "",
-    price: "",
+    price: 0,
     size: "",
     images: "",
     isNew: true,
+    _id: "",
     quantity: 0,
     discount: 0,
     category: "",
@@ -40,7 +44,15 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getProduct(id);
-  }, []);
+    setTotalAmount(count * product.price);
+    setCartProduct({
+      ...cartProduct,
+      productId: id as string,
+      totalAmount,
+      quantity: count,
+    });
+  }, [count]);
+  console.log("sangdah baraa", cartProduct);
   const handleRatingSelect = (rating: number) => {
     console.log("Сонгосон үнэлгээ: ", rating);
   };
@@ -140,7 +152,12 @@ const ProductDetail = () => {
           <div className="flex flex-col gap-1 py-4">
             <p className="text-xl font-bold">{product.price}</p>
             <div className="py-4">
-              <Button className="bg-[#2563EB] rounded-2xl">
+              <Button
+                className="bg-[#2563EB] rounded-2xl"
+                onClick={() => {
+                  addCartProduct;
+                }}
+              >
                 Сагсанд нэмэх
               </Button>
             </div>

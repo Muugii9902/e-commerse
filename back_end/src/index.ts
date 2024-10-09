@@ -3,9 +3,11 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./routes/auth-Route";
 import { connectDB } from "./config/db";
-import nodemailer from "nodemailer";
+
 import categoryRoutes from "./routes/categoryRoutes";
 import productRoutes from "./routes/product-route";
+import cartRoute from "./routes/cart-Route";
+
 dotenv.config();
 
 import { Resend } from "resend";
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/", categoryRoutes);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/carts", cartRoute);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Welcome E-Commerce API Server");
