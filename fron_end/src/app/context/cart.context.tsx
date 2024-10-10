@@ -57,9 +57,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         totalAmount,
         quantity,
       });
+
       toast.success("success");
     } catch (error: any) {
-      console.log("cart list", error.message);
+      console.log("cart list", error);
       toast.error("error carts listeee ");
     }
   };
@@ -77,6 +78,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     fetchCartData();
   }, []);
   console.log("ccaartaa", cart);
+  console.log("useree", user);
 
   return (
     <CartContext.Provider

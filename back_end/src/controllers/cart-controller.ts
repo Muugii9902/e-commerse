@@ -13,6 +13,7 @@ export const getCarts = async (req: Request, res: Response) => {
 
 export const createCart = async (req: Request, res: Response) => {
   const { userId, productId, totalAmount, quantity } = req.body;
+  console.log("====>", req.body);
   try {
     const findUserCart = await Cart.findOne({ user: userId });
     if (!findUserCart) {

@@ -155,7 +155,8 @@ const ProductDetail = () => {
               <Button
                 className="bg-[#2563EB] rounded-2xl"
                 onClick={() => {
-                  addCartProduct;
+                  addCartProduct();
+                  // toast.success("Сагсанд амжилттай нэмлээ!");
                 }}
               >
                 Сагсанд нэмэх
