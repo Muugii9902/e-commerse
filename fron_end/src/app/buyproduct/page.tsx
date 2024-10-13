@@ -31,7 +31,7 @@ const BuyProduct = () => {
             >
               <div className="flex">
                 <img
-                  src={item.image || "/images/pro1.png"} // Нэмэлт зураг оруулах
+                  src={item.image || "/images/pro1.png"}
                   alt={item.name}
                   className="h-[100px] rounded-sm"
                 />
