@@ -15,6 +15,9 @@ import { toast } from "react-toastify";
 
 interface ICart {
   productId: string;
+  name: string;
+  image: string[];
+  price: number;
   totalAmount: number;
   quantity: number;
 }
@@ -24,17 +27,19 @@ interface ICartContext {
   cartProduct: ICart;
   fetchCartData: () => void;
   addCartProduct: () => void;
-  setCartProduct: Dispatch<
-    SetStateAction<{
-      productId: string;
-      totalAmount: number;
-      quantity: number;
-    }>
-  >;
+  setCartProduct: Dispatch<SetStateAction<ICart>>;
 }
+
 export const CartContext = createContext<ICartContext>({
   cart: [],
-  cartProduct: { productId: "", totalAmount: 0, quantity: 0 },
+  cartProduct: {
+    productId: "",
+    totalAmount: 0,
+    quantity: 0,
+    name: "",
+    image: [],
+    price: 0,
+  },
   fetchCartData: () => {},
   addCartProduct: () => {},
   setCartProduct: () => {},
@@ -42,12 +47,17 @@ export const CartContext = createContext<ICartContext>({
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useContext(UserContext);
+
   const [cart, setCart] = useState<ICart[]>([]);
-  const [cartProduct, setCartProduct] = useState({
+  const [cartProduct, setCartProduct] = useState<ICart>({
     productId: "",
     totalAmount: 0,
     quantity: 0,
+    name: "",
+    image: [],
+    price: 0,
   });
+
   const addCartProduct = async () => {
     const { productId, totalAmount, quantity } = cartProduct;
     try {

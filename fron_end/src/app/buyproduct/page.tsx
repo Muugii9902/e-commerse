@@ -6,11 +6,15 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { CartContext } from "../context/cart.context";
 
 const BuyProduct = () => {
-  const { fetchCartData, cartProduct } = useContext(CartContext);
+  const { fetchCartData, cart } = useContext(CartContext);
 
   useEffect(() => {
     fetchCartData();
-  }, [fetchCartData]);
+  }, []);
+
+  console.log("Сагсанд байгаа бараа", cart);
+
+  const cartProducts = cart;
 
   return (
     <div className="max-w-[1440px] h-auto">
@@ -22,19 +26,19 @@ const BuyProduct = () => {
         </ul>
       </div>
       <div className="max-w-[638px] m-auto p-5">
-        <p className="mb-5">1. Сагс ({cartProduct.length})</p>
-        {cartProduct.length > 0 ? (
-          cartProduct.map((item) => (
-            <div
-              key={item.productId}
-              className="w-[574px] flex justify-between border p-4 rounded-md mb-4"
-            >
+        <p className="mb-5">1. Сагс ({cartProducts.length})</p>
+        {cartProducts.length > 0 ? (
+          cartProducts.map((item) => (
+            <div className="w-[574px] flex justify-between border p-4 rounded-md mb-4">
               <div className="flex">
-                <img
-                  src={item.image || "/images/pro1.png"}
-                  alt={item.name}
-                  className="h-[100px] rounded-sm"
-                />
+                {item.image.map((imgSrc, index) => (
+                  <img
+                    key={index}
+                    src={imgSrc}
+                    alt={`${item.name} зураг ${index + 1}`}
+                    className="h-[100px] rounded-sm"
+                  />
+                ))}
               </div>
               <div>
                 <p>{item.name}</p>
@@ -43,15 +47,10 @@ const BuyProduct = () => {
                   <p>{item.price}₮</p>
                   <Button className="rounded-full">-</Button>
                 </div>
-                <p>{item.totalAmount}₮</p> {/* Нийт дүн */}
+                <p>{item.totalAmount}₮</p>
               </div>
               <div>
-                <FaRegTrashAlt
-                  size={20}
-                  onClick={() => {
-                    /* Устгах функц */
-                  }}
-                />
+                <FaRegTrashAlt size={20} onClick={() => {}} />
               </div>
             </div>
           ))
@@ -59,7 +58,7 @@ const BuyProduct = () => {
           <p>Сагс хоосон байна.</p>
         )}
         <Button className="bg-[#2563EB] rounded-full items-end mt-10">
-          Сагсанд нэмэх
+          Сагсанд
         </Button>
       </div>
     </div>
