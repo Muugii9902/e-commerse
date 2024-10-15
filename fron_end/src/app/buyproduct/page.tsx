@@ -15,6 +15,7 @@ const BuyProduct = () => {
   console.log("Сагсанд байгаа бараа", cart);
 
   const cartProducts = cart;
+  console.log("kkksdaskdkas", cartProducts);
 
   return (
     <div className="max-w-[1440px] h-auto">
@@ -31,14 +32,11 @@ const BuyProduct = () => {
           cartProducts.map((item) => (
             <div className="w-[574px] flex justify-between border p-4 rounded-md mb-4">
               <div className="flex">
-                {item.image.map((imgSrc, index) => (
-                  <img
-                    key={index}
-                    src={imgSrc}
-                    alt={`${item.name} зураг ${index + 1}`}
-                    className="h-[100px] rounded-sm"
-                  />
-                ))}
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="h-[100px] rounded-sm"
+                />
               </div>
               <div>
                 <p>{item.name}</p>

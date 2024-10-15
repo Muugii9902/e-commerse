@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 interface ICart {
   productId: string;
   name: string;
-  image: string[];
+  image: string;
   price: number;
   totalAmount: number;
   quantity: number;
@@ -37,7 +37,7 @@ export const CartContext = createContext<ICartContext>({
     totalAmount: 0,
     quantity: 0,
     name: "",
-    image: [],
+    image: "",
     price: 0,
   },
   fetchCartData: () => {},
@@ -54,7 +54,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     totalAmount: 0,
     quantity: 0,
     name: "",
-    image: [],
+    image: "",
     price: 0,
   });
 
@@ -77,18 +77,24 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchCartData = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/v1/carts`);
-      setCart(res.data.allCarts);
+      if (!user) return;
+
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/carts?userId=${user?._id}`
+      );
+      setCart(res.data.userCarts);
+      console.log(" user baraanuud", res.data.userCarts);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
+  console.log("ssssss", cart);
 
   useEffect(() => {
     fetchCartData();
-  }, []);
-  console.log("ccaartaa", cart);
-  console.log("useree", user);
+  }, [user]);
+  // console.log("ccaartaa", cart);
+  // console.log("useree", user);
 
   return (
     <CartContext.Provider

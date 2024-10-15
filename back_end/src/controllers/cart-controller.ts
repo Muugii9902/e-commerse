@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 import Cart from "../models/cart.models";
+import { populate } from "dotenv";
 
 export const getCarts = async (req: Request, res: Response) => {
+  const { userId } = req.query;
   try {
-    const allCarts = await Cart.find({});
-    res.status(200).json({ message: "success", allCarts: allCarts });
+    const userCarts = await Cart.findOne({ user: userId }).populate(
+      "products.product"
+    );
+    res.status(200).json({ message: "success", userCarts: userCarts });
+    console.log("cartssss", userCarts);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: " get carts error ", error: error });
