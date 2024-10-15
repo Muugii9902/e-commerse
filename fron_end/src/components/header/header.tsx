@@ -31,7 +31,14 @@ export const Header = () => {
       </div>
       <div className="flex gap-8 items-center">
         <Heart size={24} aria-label="Favorites" />
-        <ShoppingCart size={24} aria-label="Shopping Cart" />
+        <Link href={"/buyproduct"}>
+          <ShoppingCart
+            strokeWidth={1}
+            color="white"
+            className="mr-3"
+            size={20}
+          />
+        </Link>
         {!user ? (
           <>
             <Button className="w-[101px] px-8 rounded-full border-[#2563EB] border-[1px]">

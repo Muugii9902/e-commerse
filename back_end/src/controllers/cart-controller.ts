@@ -2,20 +2,6 @@ import { Request, Response } from "express";
 import Cart from "../models/cart.models";
 import { populate } from "dotenv";
 
-export const getCarts = async (req: Request, res: Response) => {
-  const { userId } = req.query;
-  try {
-    const userCarts = await Cart.findOne({ user: userId }).populate(
-      "products.product"
-    );
-    res.status(200).json({ message: "success", userCarts: userCarts });
-    console.log("cartssss", userCarts);
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: " get carts error ", error: error });
-  }
-};
-
 export const createCart = async (req: Request, res: Response) => {
   const { userId, productId, totalAmount, quantity } = req.body;
   console.log("====>", req.body);
@@ -49,6 +35,43 @@ export const createCart = async (req: Request, res: Response) => {
     console.log(error);
     res.status(400).json({
       message: "Failed to read carts",
+    });
+  }
+};
+
+export const getCart = async (req: Request, res: Response) => {
+  const { id } = req.user;
+  try {
+    const cart = await Cart.findOne({ user: id }).populate("product.product");
+    res.status(200).json({ message: "get cart", cart });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "failed to get cart",
+    });
+  }
+};
+export const updateCart = async (req: Request, res: Response) => {
+  const { id } = req.user;
+  const { productId, newQuantity } = req.body;
+  try {
+    const cart = await Cart.findOne({ user: id });
+    if (!cart) {
+      return res.status(400).json({ message: "not found user" });
+    }
+    const findProduct = cart.products.findIndex(
+      (item) => item.product.toString() === productId
+    );
+    cart.products[findProduct].quantity = newQuantity;
+    const updateCart = await cart.save();
+    res.status(200).json({
+      message: "update cart",
+      updateCart,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "failed to get carts",
     });
   }
 };

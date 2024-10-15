@@ -8,15 +8,15 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import Rating from "@/components/rating";
-import { CartContext } from "../context/cart.context";
+import { UserContext } from "../context/user.context";
 
 const ProductDetail = () => {
-  const { addCartProduct, setCartProduct, cartProduct } =
-    useContext(CartContext);
+  const { user } = useContext(UserContext);
   const [isTrue, setIstrue] = useState(true);
-  const [count, setCount] = useState(1);
+  const [productQuantity, setProductQuantity] = useState(0);
+
   const { id } = useParams();
-  const [totalAmount, setTotalAmount] = useState(0);
+
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -42,20 +42,33 @@ const ProductDetail = () => {
     }
   };
 
+  const addToCart = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/v1/carts/create-cart`,
+        {
+          userId: user?._id,
+          productId: id,
+          quantity: productQuantity,
+        }
+      );
+      if (res.status === 200) {
+        toast.success("Product added to cart");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to cart");
+    }
+  };
+
   useEffect(() => {
     getProduct(id);
-    setTotalAmount(count * product.price);
-    setCartProduct({
-      ...cartProduct,
-      productId: id as string,
-      totalAmount,
-      quantity: count,
-    });
-  }, [count]);
-  console.log("sangdah baraa", cartProduct);
+  }, []);
+
   const handleRatingSelect = (rating: number) => {
     console.log("Сонгосон үнэлгээ: ", rating);
   };
+  console.log("hereglegch", user);
 
   return (
     <div className="w-full h-screen ">
@@ -133,18 +146,14 @@ const ProductDetail = () => {
           <div className="flex items-center gap-3 py-4">
             <button
               className="border border-black rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-400"
-              onClick={() => {
-                setCount(count - 1);
-              }}
+              onClick={() => setProductQuantity(productQuantity - 1)}
             >
               -
             </button>
-            <p>{count}</p>
+            <p>{productQuantity}</p>
             <button
               className="border border-black rounded-full w-8 h-8 flex justify-center items-center hover:bg-gray-400"
-              onClick={() => {
-                setCount(count + 1);
-              }}
+              onClick={() => setProductQuantity(productQuantity + 1)}
             >
               +
             </button>
@@ -152,13 +161,7 @@ const ProductDetail = () => {
           <div className="flex flex-col gap-1 py-4">
             <p className="text-xl font-bold">{product.price}</p>
             <div className="py-4">
-              <Button
-                className="bg-[#2563EB] rounded-2xl"
-                onClick={() => {
-                  addCartProduct();
-                  // toast.success("Сагсанд амжилттай нэмлээ!");
-                }}
-              >
+              <Button className="bg-[#2563EB] rounded-2xl" onClick={addToCart}>
                 Сагсанд нэмэх
               </Button>
             </div>
