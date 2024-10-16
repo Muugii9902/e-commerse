@@ -13,7 +13,7 @@ import { UserContext } from "../context/user.context";
 const ProductDetail = () => {
   const { user } = useContext(UserContext);
   const [isTrue, setIstrue] = useState(true);
-  const [productQuantity, setProductQuantity] = useState(0);
+  const [productQuantity, setProductQuantity] = useState(1);
 
   const { id } = useParams();
 
