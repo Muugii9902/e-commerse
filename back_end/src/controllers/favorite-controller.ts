@@ -78,26 +78,25 @@ export const getUserFavorites = async (req: Request, res: Response) => {
 
 // Хэрэглэгчийн дуртай бүтээгдэхүүнд тухайн бараа байгаа эсэхийг шалгах controller
 export const checkIfFavorite = async (req: Request, res: Response) => {
-  const userId = req.user?.id; // req.user-д JWT-аас хэрэглэгчийн ID байгаа эсэхийг шалгана
+  const userId = req.user?.id; // JWT-аас хэрэглэгчийн ID-г авах
   const productId = req.params.productId; // URL-аас productId-г авах
 
   try {
-    // Хэрэглэгчийн дуртай бүтээгдэхүүнүүд дотроос тухайн бараа байгаа эсэхийг шалгах
+    // Favorite загвар нь хэрэглэгчийн дуртай бүтээгдэхүүнүүдийг хадгалдаг
     const favorite = await Favorite.findOne({
-      user: userId,
-      products: productId,
+      user: userId, // хэрэглэгчийн ID-ээр хайх
+      products: productId, // products дотор тухайн бүтээгдэхүүн байгаа эсэхийг шалгах
     });
 
-    // Хэрвээ тухайн бүтээгдэхүүн хэрэглэгчийн дуртай бүтээгдэхүүн дотор байвал true буцаана
     if (favorite) {
-      return res.status(200).json({ isFavorite: true });
+      return res.status(200).json({ isFavorite: true }); // true утга буцаах
     } else {
-      return res.status(200).json({ isFavorite: false });
+      return res.status(200).json({ isFavorite: false }); // байхгүй бол false утга буцаах
     }
   } catch (error) {
     console.error("Error checking favorite status:", error);
     return res.status(500).json({
-      message: "Failed to check if product is favorite",
+      message: "Failed to check if product is favorite", // алдаа гарвал алдааны мэдээлэл дамжуулах
     });
   }
 };

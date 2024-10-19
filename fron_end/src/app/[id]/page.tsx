@@ -61,6 +61,27 @@ const ProductDetail = () => {
       toast.error("Failed to add to cart");
     }
   };
+  const checkIfFavorite = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/wish/check-favorite/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Токенийг зөв форматаар оруулсан
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("sdasdas", res.data.isFavorite);
+      setIsFavorite(res.data.isFavorite); // Хэрэв true бол улаан зүрхтэй харуулах логик ажиллах ёстой
+    } catch (error) {
+      console.error("Дуртай эсэхийг шалгахад алдаа гарлаа:", error);
+    }
+  };
 
   const addToFavorites = async () => {
     try {
@@ -80,6 +101,7 @@ const ProductDetail = () => {
       );
       if (res.status === 200) {
         toast.success("Product added to favorites");
+        setIsFavorite(true);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -105,33 +127,16 @@ const ProductDetail = () => {
       );
       if (res.status === 200) {
         toast.success("Product removed from favorites");
+        setIsFavorite(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("Failed to remove from favorites");
     }
   };
-  const checkIfFavorite = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const res = await axios.get(
-        `http://localhost:8000/api/v1/wish/check-favorite/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setIsFavorite(res.data.isFavorite);
-    } catch (error) {
-      console.error("Дуртай эсэхийг шалгахад алдаа гарлаа:", error);
-    }
-  };
 
   const handleFavoriteToggle = () => {
+    console.log("Тогтмол: ", isFavorite);
     if (isFavorite) {
       removeFromFavorites();
     } else {
@@ -147,7 +152,6 @@ const ProductDetail = () => {
   const handleRatingSelect = (rating: number) => {
     console.log("Сонгосон үнэлгээ: ", rating);
   };
-  console.log("hereglegch", user);
 
   return (
     <div className="w-full h-screen ">
@@ -185,7 +189,7 @@ const ProductDetail = () => {
           </span>
           <div className="flex items-center gap-4">
             <p className="text-2xl font-bold">{product.name}</p>
-            {isFavorite ? (
+            {!isFavorite ? (
               <CiHeart className="text-3xl" onClick={handleFavoriteToggle} />
             ) : (
               <FaHeart
