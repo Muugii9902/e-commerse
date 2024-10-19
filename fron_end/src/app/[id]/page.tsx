@@ -12,7 +12,8 @@ import { UserContext } from "../context/user.context";
 
 const ProductDetail = () => {
   const { user } = useContext(UserContext);
-  const [isTrue, setIstrue] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const [productQuantity, setProductQuantity] = useState(1);
 
   const { id } = useParams();
@@ -61,9 +62,87 @@ const ProductDetail = () => {
     }
   };
 
+  const addToFavorites = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `http://localhost:8000/api/v1/wish/add`,
+        {
+          userId: user?._id,
+          productId: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.status === 200) {
+        toast.success("Product added to favorites");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to favorites");
+    }
+  };
+  const removeFromFavorites = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.delete(
+        `http://localhost:8000/api/v1/wish/remove`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          data: {
+            userId: user?._id,
+            productId: id,
+          },
+        }
+      );
+      if (res.status === 200) {
+        toast.success("Product removed from favorites");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to remove from favorites");
+    }
+  };
+  const checkIfFavorite = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/wish/check-favorite/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setIsFavorite(res.data.isFavorite);
+    } catch (error) {
+      console.error("Дуртай эсэхийг шалгахад алдаа гарлаа:", error);
+    }
+  };
+
+  const handleFavoriteToggle = () => {
+    if (isFavorite) {
+      removeFromFavorites();
+    } else {
+      addToFavorites();
+    }
+  };
+
   useEffect(() => {
     getProduct(id);
-  }, []);
+    checkIfFavorite();
+  }, [id]);
 
   const handleRatingSelect = (rating: number) => {
     console.log("Сонгосон үнэлгээ: ", rating);
@@ -106,19 +185,12 @@ const ProductDetail = () => {
           </span>
           <div className="flex items-center gap-4">
             <p className="text-2xl font-bold">{product.name}</p>
-            {isTrue ? (
-              <CiHeart
-                className="text-3xl"
-                onClick={() => {
-                  setIstrue(false);
-                }}
-              />
+            {isFavorite ? (
+              <CiHeart className="text-3xl" onClick={handleFavoriteToggle} />
             ) : (
               <FaHeart
                 className="text-2xl text-red-600"
-                onClick={() => {
-                  setIstrue(true);
-                }}
+                onClick={handleFavoriteToggle}
               />
             )}
           </div>

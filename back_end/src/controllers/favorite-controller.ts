@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Favorite from "../models/mishlist";
+import Favorite from "../models/wishlist";
 
 // Бүтээгдэхүүнийг дуртай жагсаалтанд нэмэх
 export const addFavorite = async (req: Request, res: Response) => {
@@ -72,6 +72,32 @@ export const getUserFavorites = async (req: Request, res: Response) => {
     console.log(error);
     res.status(400).json({
       message: "Failed to get user's favorites",
+    });
+  }
+};
+
+// Хэрэглэгчийн дуртай бүтээгдэхүүнд тухайн бараа байгаа эсэхийг шалгах controller
+export const checkIfFavorite = async (req: Request, res: Response) => {
+  const userId = req.user?.id; // req.user-д JWT-аас хэрэглэгчийн ID байгаа эсэхийг шалгана
+  const productId = req.params.productId; // URL-аас productId-г авах
+
+  try {
+    // Хэрэглэгчийн дуртай бүтээгдэхүүнүүд дотроос тухайн бараа байгаа эсэхийг шалгах
+    const favorite = await Favorite.findOne({
+      user: userId,
+      products: productId,
+    });
+
+    // Хэрвээ тухайн бүтээгдэхүүн хэрэглэгчийн дуртай бүтээгдэхүүн дотор байвал true буцаана
+    if (favorite) {
+      return res.status(200).json({ isFavorite: true });
+    } else {
+      return res.status(200).json({ isFavorite: false });
+    }
+  } catch (error) {
+    console.error("Error checking favorite status:", error);
+    return res.status(500).json({
+      message: "Failed to check if product is favorite",
     });
   }
 };

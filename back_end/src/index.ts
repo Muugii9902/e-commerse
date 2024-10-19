@@ -7,10 +7,12 @@ import { connectDB } from "./config/db";
 import categoryRoutes from "./routes/categoryRoutes";
 import productRoutes from "./routes/product-route";
 import cartRoute from "./routes/cart-Route";
+import favroute from "./routes/favorite-Route";
 
 dotenv.config();
 
 import { Resend } from "resend";
+
 // express
 const resend = new Resend(process.env.RESEND_API_KEYS);
 
@@ -25,6 +27,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/", categoryRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/carts", cartRoute);
+app.use("/api/v1/wish", favroute);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Welcome E-Commerce API Server");
